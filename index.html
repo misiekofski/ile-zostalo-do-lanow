@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +7,7 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -16,27 +16,33 @@
         #countdown {
             font-size: 24px;
             color: #333;
+            margin-top: 20px;
+        }
+        img {
+            width: 400px;
+            height: 300px;
         }
     </style>
 </head>
 <body>
-    <div id="logo"><img src="./img/piter.jpg"></div>
+    <img src="./img/impreza.png" alt="Tak się bawią tak się bawią">
     <div id="countdown">Loading...</div>
 
     <script>
         function updateCountdown() {
-            const meetingDate = new Date('November 13, 2024 18:00:00').getTime();
+            const meetingDate = new Date('November 13, 2023 18:00:00').getTime();
             const now = new Date().getTime();
             const distance = meetingDate - now;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById('countdown').innerHTML = `Do początku lanów zostało ${days} dni oraz ${hours} godzin`;
+            document.getElementById('countdown').innerHTML = `To Lan Party there is ${hours}h ${minutes}m ${seconds}s left`;
 
             if (distance < 0) {
                 clearInterval(interval);
-                document.getElementById('countdown').innerHTML = "Lany wystartowały!";
+                document.getElementById('countdown').innerHTML = "Lan Party have started!";
             }
         }
 
