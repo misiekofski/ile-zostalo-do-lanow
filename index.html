@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-    <img src="./img/impreza.png" alt="Tak się bawią tak się bawią">
+    <img id="logo" src="./img/impreza.png" alt="This is how we roll...">
     <div id="countdown">Loading...</div>
 
     <script>
@@ -39,11 +39,12 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById('countdown').innerHTML = `There are ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds remaining until the LAN party.`;
+            document.getElementById('countdown').innerHTML = `There are ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds <br /> remaining until the LAN party.`;
 
             if (distance < 0) {
                 clearInterval(interval);
                 document.getElementById('countdown').innerHTML = "Lan Party have started!";
+                document.getElementById('logo').src = "./img/piter.jpg"
             }
         }
 
