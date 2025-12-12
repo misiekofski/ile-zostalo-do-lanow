@@ -1,64 +1,366 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer</title>
+    <title>🎮 LAN Party Countdown</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            background-attachment: fixed;
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(120, 0, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 255, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 0, 100, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #000000;
+            padding: 2rem 1rem;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        #countdown {
-            font-size: 24px;
+
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
         }
-        img {
-            width: 200px;
-            height: 350px;
+
+        .header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            background: linear-gradient(90deg, #00f5d4, #7b2cbf, #f72585);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
-        #gif {
-            font-size: 18px;
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
         }
-        div {
-            margin-top: 20px;
-            color: #e8e8e8;
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 30px rgba(123, 44, 191, 0.3),
+                0 0 60px rgba(0, 245, 212, 0.1),
+                inset 0 0 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00f5d4, #7b2cbf, #f72585, #00f5d4);
+            background-size: 400% 400%;
+            z-index: -1;
+            border-radius: 18px;
+            animation: border-glow 4s ease infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes border-glow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .video-container iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+
+        .mascot-container {
+            position: relative;
+            padding: 1rem;
+        }
+
+        .mascot-container img {
+            max-width: 220px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(123, 44, 191, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: contain;
+        }
+
+        .mascot-container img:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 
+                0 15px 50px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(0, 245, 212, 0.4);
+        }
+
+        .mascot-container .loading-placeholder {
+            width: 220px;
+            height: 300px;
+            background: linear-gradient(90deg, #1a1a2e 25%, #2a2a4e 50%, #1a1a2e 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .countdown-wrapper {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .countdown-label {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .countdown-value {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            font-weight: 700;
+            background: linear-gradient(180deg, #fff 0%, #00f5d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .countdown-unit {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-top: 0.5rem;
+        }
+
+        .countdown-message {
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+
+        .party-started {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            background: linear-gradient(90deg, #f72585, #7b2cbf, #00f5d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(1); }
+            to { opacity: 1; transform: scale(1.02); }
+        }
+
+        .file-size-badge {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00f5d4;
+            font-size: 0.65rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'Orbitron', monospace;
+            border: 1px solid rgba(0, 245, 212, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .container {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="movie">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/G146yZ5owQo?si=L6FYXBG_2zV_jPSY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="container">
+        <header class="header">
+            <h1>LAN Party Countdown</h1>
+        </header>
+
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/G146yZ5owQo?si=L6FYXBG_2zV_jPSY" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <div class="mascot-container">
+            <div class="loading-placeholder" id="loading-placeholder">Loading...</div>
+            <img 
+                id="logo" 
+                src="" 
+                alt="LAN Party Mascot"
+                style="display: none;"
+                loading="lazy"
+            >
+            <span class="file-size-badge" id="size-badge"></span>
+        </div>
+
+        <div class="countdown-wrapper">
+            <div class="countdown-label">Time Remaining</div>
+            <div class="countdown-grid" id="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="days">--</span>
+                    <span class="countdown-unit">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="hours">--</span>
+                    <span class="countdown-unit">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="minutes">--</span>
+                    <span class="countdown-unit">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="seconds">--</span>
+                    <span class="countdown-unit">Seconds</span>
+                </div>
+            </div>
+            <div class="countdown-message" id="countdown-message">until the LAN party begins!</div>
+        </div>
     </div>
-    <div id="gif">
-        <img id="logo" src="./img/kielon-dance.gif" alt="This is how we roll...">
-    </div>
-    
-    <div id="countdown">Loading...</div>
 
     <script>
+        const images = {
+            'kielon-dance.gif': { size: 2536673, sizeText: '2.4 MB' },
+            'impreza.png': { size: 655052, sizeText: '640 KB' },
+            'piter.jpg': { size: 132797, sizeText: '130 KB' }
+        };
+
+        function loadImage(filename) {
+            const img = document.getElementById('logo');
+            const placeholder = document.getElementById('loading-placeholder');
+            const sizeBadge = document.getElementById('size-badge');
+            const imageData = images[filename];
+            
+            img.onload = function() {
+                placeholder.style.display = 'none';
+                img.style.display = 'block';
+                if (imageData) {
+                    sizeBadge.textContent = imageData.sizeText;
+                }
+            };
+            
+            img.onerror = function() {
+                placeholder.textContent = 'Image unavailable';
+            };
+            
+            img.src = './img/' + filename;
+        }
+
         function updateCountdown() {
             const meetingDate = new Date('November 6, 2026 18:00:00').getTime();
             const now = new Date().getTime();
             const distance = meetingDate - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                document.getElementById('countdown-grid').style.display = 'none';
+                document.getElementById('countdown-message').innerHTML = '<span class="party-started">🎮 LAN Party Has Started! 🎮</span>';
+                document.getElementById('countdown-label')?.remove();
+                loadImage('piter.jpg');
+                return;
+            }
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById('countdown').innerHTML = `There are ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds <br /> remaining until the LAN party.`;
-
-            if (distance < 0) {
-                clearInterval(interval);
-                document.getElementById('countdown').innerHTML = "Lan Party have started!";
-                document.getElementById('logo').src = "./img/piter.jpg"
-            }
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
         }
 
+        loadImage('kielon-dance.gif');
+        updateCountdown();
         const interval = setInterval(updateCountdown, 1000);
     </script>
 </body>
