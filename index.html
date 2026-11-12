@@ -245,7 +245,7 @@
 
         .hall-of-fame {
             width: 100%;
-            max-width: 700px;
+            max-width: 960px;
             text-align: center;
         }
 
@@ -263,7 +263,7 @@
 
         .gallery {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
         }
 
@@ -274,6 +274,12 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             background: #111;
+            cursor: zoom-in;
+        }
+
+        .gallery figure:focus-visible {
+            outline: 2px solid #00f5d4;
+            outline-offset: 2px;
         }
 
         .gallery img {
@@ -297,7 +303,77 @@
             padding: 1.5rem 0.5rem 0.6rem;
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
             font-weight: 700;
-            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            font-size: clamp(0.75rem, 1.6vw, 0.95rem);
+            line-height: 1.2;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 150;
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox img {
+            display: block;
+            max-width: min(92vw, 1200px);
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(123, 44, 191, 0.5);
+        }
+
+        .lightbox-caption {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .lightbox button {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            background: rgba(26, 26, 46, 0.8);
+            color: #fff;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .lightbox button:hover {
+            border-color: #00f5d4;
+            color: #00f5d4;
+        }
+
+        .lightbox-close {
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .lightbox-prev,
+        .lightbox-next {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-prev {
+            left: 1rem;
+        }
+
+        .lightbox-next {
+            right: 1rem;
         }
 
         .zzz {
@@ -434,12 +510,121 @@
             }
 
             .gallery {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 0.6rem;
             }
+
+            .gallery figcaption {
+                font-size: 0.8rem;
+            }
+
+            .lightbox-prev,
+            .lightbox-next {
+                top: auto;
+                bottom: 1rem;
+                transform: none;
+            }
+        }
+
+        body.locked .container {
+            display: none;
+        }
+
+        .gate {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 200;
+        }
+
+        body:not(.locked) .gate {
+            display: none;
+        }
+
+        .gate-box {
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid #7b2cbf;
+            border-radius: 18px;
+            box-shadow: 0 0 40px rgba(123, 44, 191, 0.5);
+        }
+
+        .gate-box.shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .gate-box h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            color: #00f5d4;
+            margin-bottom: 0.5rem;
+        }
+
+        .gate-box p {
+            color: #888;
+            margin-bottom: 1.25rem;
+        }
+
+        .gate-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            color: #e8e8e8;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #444;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .gate-box input:focus {
+            border-color: #00f5d4;
+        }
+
+        .gate-box button {
+            width: 100%;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #0a0a0a;
+            background: #00f5d4;
+        }
+
+        .gate-error {
+            min-height: 1.4em;
+            margin-top: 0.75rem;
+            color: #f72585;
         }
     </style>
 </head>
-<body>
+<body class="locked">
+    <div class="gate">
+        <form class="gate-box" id="gate-form" autocomplete="off">
+            <h2>🔒 Members only</h2>
+            <p>Say the magic word, or go back to sleep.</p>
+            <input type="password" id="gate-password" placeholder="Password" aria-label="Password" autofocus>
+            <button type="submit">Let me in</button>
+            <div class="gate-error" id="gate-error" role="alert"></div>
+        </form>
+    </div>
+
     <div class="container">
         <header class="header">
             <h1>LAN Party Countdown</h1>
@@ -477,6 +662,12 @@
             <div class="click-hint">👆 click for a joke</div>
         </div>
 
+        <section class="hall-of-fame">
+            <h2>🏆 Hall of Shame: Sleep Champions</h2>
+            <p>The games were running. These legends were not. Click a photo to zoom in on the shame.</p>
+            <div class="gallery" id="gallery"></div>
+        </section>
+
         <div class="video-container">
             <iframe 
                 src="https://www.youtube.com/embed/G146yZ5owQo?si=L6FYXBG_2zV_jPSY" 
@@ -497,23 +688,14 @@
             >
             <span class="file-size-badge" id="size-badge"></span>
         </div>
+    </div>
 
-        <section class="hall-of-fame">
-            <h2>🏆 Hall of Fame: Sleep Champion</h2>
-            <p>LAN 2026, 00:30. The games were running. The champion was not.</p>
-            <div class="gallery">
-                <figure>
-                    <img src="./img/sleeper-1.jpg" alt="The sleep champion asleep sitting upright at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 25%;">
-                    <span class="zzz">Zzz</span>
-                    <figcaption>00:30 – "just resting my eyes"</figcaption>
-                </figure>
-                <figure>
-                    <img src="./img/sleeper-2.jpg" alt="The sleep champion asleep slumped over at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 45%;">
-                    <span class="zzz">Zzz</span>
-                    <figcaption>00:33 – full AFK mode</figcaption>
-                </figure>
-            </div>
-        </section>
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <img id="lightbox-img" alt="">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+        <button type="button" class="lightbox-prev" id="lightbox-prev" aria-label="Previous photo">‹</button>
+        <button type="button" class="lightbox-next" id="lightbox-next" aria-label="Next photo">›</button>
     </div>
 
     <div class="joke-overlay" id="joke-overlay" role="dialog" aria-modal="true" aria-labelledby="joke-text">
@@ -528,6 +710,39 @@
     </div>
 
     <script>
+        // SHA-256 of the password, so it isn't readable in the page source
+        const PASSWORD_HASH = '00a62d01d81de3e6ec535747b9c05cbd6ac88812fe57748ba3f2e3fd0e9a15a4';
+
+        const wrongPasswordMessages = [
+            'Nope. Did you fall asleep on the keyboard?',
+            'Wrong. Try again, champ.',
+            'Access denied. Go drink an energy drink first.',
+            'Still wrong. Are you even awake?'
+        ];
+        let wrongAttempts = 0;
+
+        async function sha256(text) {
+            const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        document.getElementById('gate-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const input = document.getElementById('gate-password');
+            if (await sha256(input.value.trim().toLowerCase()) === PASSWORD_HASH) {
+                document.body.classList.remove('locked');
+                return;
+            }
+            const form = e.target;
+            document.getElementById('gate-error').textContent =
+                wrongPasswordMessages[wrongAttempts++ % wrongPasswordMessages.length];
+            input.value = '';
+            input.focus();
+            form.classList.remove('shake');
+            form.offsetHeight;
+            form.classList.add('shake');
+        });
+
         const images = {
             'kielon-dance.gif': { size: 2536673, sizeText: '2.4 MB' },
             'impreza.png': { size: 655052, sizeText: '640 KB' },
@@ -576,11 +791,68 @@
             "We checked for a pulse. Twice. Then we checked the Steam status, because \"Online\" was the only sign of life we had."
         ];
 
-        // face position in each photo, so the round avatar shows the face
-        const jokeImages = [
-            { src: './img/sleeper-1.jpg', position: '75% 30%' },
-            { src: './img/sleeper-2.jpg', position: '35% 45%' }
-        ];
+        // sleeper-N.jpg is the 500px thumbnail, sleeper-N-full.jpg the 1200px version.
+        // thumbPos crops the gallery tile, facePos centers the face in the round joke avatar.
+        const sleepers = [
+            { caption: '00:30 – "just resting my eyes"', thumbPos: 'center 25%', facePos: 'center 30%' },
+            { caption: '00:33 – full AFK mode', thumbPos: 'center 45%', facePos: 'center 45%' },
+            { caption: '00:47 – Absolut defeat', facePos: 'center 70%' },
+            { caption: '00:47 – "I\'m not tired, I\'m focused"', facePos: 'center 20%' },
+            { caption: '03:35 – meditation, allegedly', facePos: 'center 30%' },
+            { caption: '06:22 – face-first into the mousepad', facePos: 'center 70%' },
+            { caption: '19:02 – asleep before dinner. Respect.', facePos: 'center 30%' },
+            { caption: 'Curled up like a loading icon', facePos: 'center 50%' }
+        ].map((s, i) => ({
+            ...s,
+            thumb: './img/sleeper-' + (i + 1) + '.jpg',
+            full: './img/sleeper-' + (i + 1) + '-full.jpg'
+        }));
+
+        const gallery = document.getElementById('gallery');
+        sleepers.forEach((s, i) => {
+            const figure = document.createElement('figure');
+            figure.tabIndex = 0;
+            figure.setAttribute('role', 'button');
+            figure.setAttribute('aria-label', 'Enlarge photo: ' + s.caption);
+            figure.innerHTML = '<img loading="lazy" alt=""><span class="zzz">Zzz</span><figcaption></figcaption>';
+            const img = figure.querySelector('img');
+            img.src = s.thumb;
+            if (s.thumbPos) img.style.objectPosition = s.thumbPos;
+            figure.querySelector('figcaption').textContent = s.caption;
+            figure.addEventListener('click', () => openLightbox(i));
+            figure.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+            });
+            gallery.appendChild(figure);
+        });
+
+        let lightboxIndex = 0;
+
+        function openLightbox(i) {
+            lightboxIndex = (i + sleepers.length) % sleepers.length;
+            const s = sleepers[lightboxIndex];
+            const img = document.getElementById('lightbox-img');
+            img.src = s.full;
+            img.alt = s.caption;
+            document.getElementById('lightbox-caption').textContent = s.caption;
+            document.getElementById('lightbox').classList.add('open');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+        }
+
+        document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+        document.getElementById('lightbox-prev').addEventListener('click', () => openLightbox(lightboxIndex - 1));
+        document.getElementById('lightbox-next').addEventListener('click', () => openLightbox(lightboxIndex + 1));
+        document.getElementById('lightbox').addEventListener('click', e => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('lightbox').classList.contains('open')) return;
+            if (e.key === 'ArrowLeft') openLightbox(lightboxIndex - 1);
+            if (e.key === 'ArrowRight') openLightbox(lightboxIndex + 1);
+        });
 
         let lastJoke = -1;
 
@@ -588,10 +860,10 @@
             let i;
             do { i = Math.floor(Math.random() * jokes.length); } while (i === lastJoke);
             lastJoke = i;
-            const pic = jokeImages[i % jokeImages.length];
+            const pic = sleepers[Math.floor(Math.random() * sleepers.length)];
             const img = document.getElementById('joke-img');
-            img.src = pic.src;
-            img.style.objectPosition = pic.position;
+            img.src = pic.thumb;
+            img.style.objectPosition = pic.facePos;
             document.getElementById('joke-text').textContent = jokes[i];
             document.getElementById('joke-overlay').classList.add('open');
             // restart the pop-in animation on "Another one"
@@ -615,7 +887,9 @@
         document.getElementById('joke-overlay').addEventListener('click', e => {
             if (e.target.id === 'joke-overlay') closeJoke();
         });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeJoke(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeJoke(); closeLightbox(); }
+        });
 
         let messageIndex = 0;
         const messageInterval = setInterval(() => {
