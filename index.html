@@ -136,25 +136,6 @@
                 0 0 40px rgba(0, 245, 212, 0.4);
         }
 
-        .mascot-container .loading-placeholder {
-            width: 220px;
-            height: 300px;
-            background: linear-gradient(90deg, #1a1a2e 25%, #2a2a4e 50%, #1a1a2e 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
         .countdown-wrapper {
             width: 100%;
             max-width: 700px;
@@ -509,28 +490,25 @@
         </div>
 
         <div class="mascot-container">
-            <div class="loading-placeholder" id="loading-placeholder">Loading...</div>
-            <img 
-                id="logo" 
-                src="" 
+            <img
+                id="logo"
                 alt="LAN Party Mascot"
                 style="display: none;"
-                loading="lazy"
             >
             <span class="file-size-badge" id="size-badge"></span>
         </div>
 
         <section class="hall-of-fame">
             <h2>🏆 Hall of Fame: Sleep Champion</h2>
-            <p>LAN 2026, 00:30. The games were running. Our friend was not.</p>
+            <p>LAN 2026, 00:30. The games were running. The champion was not.</p>
             <div class="gallery">
                 <figure>
-                    <img src="./img/sleeper-1.jpg" alt="Our friend asleep sitting upright at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 25%;">
+                    <img src="./img/sleeper-1.jpg" alt="The sleep champion asleep sitting upright at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 25%;">
                     <span class="zzz">Zzz</span>
                     <figcaption>00:30 – "just resting my eyes"</figcaption>
                 </figure>
                 <figure>
-                    <img src="./img/sleeper-2.jpg" alt="Our friend asleep slumped over at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 45%;">
+                    <img src="./img/sleeper-2.jpg" alt="The sleep champion asleep slumped over at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 45%;">
                     <span class="zzz">Zzz</span>
                     <figcaption>00:33 – full AFK mode</figcaption>
                 </figure>
@@ -558,20 +536,14 @@
 
         function loadImage(filename) {
             const img = document.getElementById('logo');
-            const placeholder = document.getElementById('loading-placeholder');
             const sizeBadge = document.getElementById('size-badge');
             const imageData = images[filename];
-            
+
             img.onload = function() {
-                placeholder.style.display = 'none';
                 img.style.display = 'block';
                 if (imageData) {
                     sizeBadge.textContent = imageData.sizeText;
                 }
-            };
-            
-            img.onerror = function() {
-                placeholder.textContent = 'Image unavailable';
             };
             
             img.src = './img/' + filename;
@@ -581,7 +553,7 @@
 
         const messages = [
             'until the LAN party begins!',
-            'until our friend falls asleep at 00:30 (again)',
+            'until someone falls asleep at 00:30 (you know who you are)',
             'until "just one more game" (x47)',
             'until someone forgets their power cable',
             'until the router gets restarted for no reason',
@@ -589,17 +561,19 @@
         ];
 
         const jokes = [
-            "Our friend's K/D at the last LAN: 0 kills, 0 deaths, 8 hours AFK.",
-            'Not sleeping — just buffering. Since 00:30.',
-            'LAN stands for "Lying Around Napping". Our friend read the rules very carefully.',
-            'Ping: 5 ms. Snoring: 120 dB. Guess which one we noticed.',
-            'Achievement unlocked: fell asleep before the first game finished downloading.',
-            'Doctors recommend 8 hours of sleep. Our friend does them at the LAN, to save on electricity at home.',
-            "Energy drinks consumed: 4. Minutes awake after midnight: 30. Science can't explain it.",
-            'Pro tip: bring headphones. Not for the game — for the snoring.',
-            'Our friend has the best uptime at every LAN. Just not the "awake" kind.',
-            'Favourite game mode? Sleep & Seek. Mostly sleep.',
-            "This year we're setting an alarm. Then a second one. Then a bucket of cold water."
+            "Some people come to a LAN to play games. Others come to prove you can be completely unconscious and STILL have a better K/D than half the room. Barely.",
+            "Sleeping Beauty waited a hundred years for true love's kiss. Ours made it to 00:30 and got a flash photo and a group chat. Honestly? More than they deserved.",
+            "Medical science has a name for passing out upright at 00:30 in front of a projector, surrounded by RGB and grown men screaming. It's called \"turning 30\".",
+            "We split the room, the electricity and the pizza evenly. One person got a 12-hour spa retreat with RGB lighting out of it. Best value at the event.",
+            "The hoodie says Timberland. The performance says \"TIMBERRR!\"",
+            "They say you should never wake a sleepwalker. Nobody said anything about markers.",
+            "Energy drinks are supposed to keep you awake. At this point they're just a very expensive way to pee in your sleep.",
+            "The human body can survive three days without water. The LAN champion can't survive three rounds without a nap. Natural selection is just taking its time.",
+            "Some legends die on the battlefield. Ours died on an office chair at 00:30, respawned at breakfast and asked \"did I miss anything?\" Yes. Your dignity. It left around 00:31.",
+            "This year we're bringing a defibrillator. Not for emergencies. For entertainment.",
+            "If snoring were an esport, we'd finally have a team captain.",
+            "Retirement homes have more people awake after midnight. And better Wi-Fi. And frankly, better reflexes.",
+            "We checked for a pulse. Twice. Then we checked the Steam status, because \"Online\" was the only sign of life we had."
         ];
 
         // face position in each photo, so the round avatar shows the face
