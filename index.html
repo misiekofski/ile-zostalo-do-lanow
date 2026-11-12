@@ -114,6 +114,8 @@
         .mascot-container {
             position: relative;
             padding: 1rem;
+            display: flex;
+            justify-content: center;
         }
 
         .mascot-container img {
@@ -154,13 +156,26 @@
         }
 
         .countdown-wrapper {
+            width: 100%;
+            max-width: 700px;
             text-align: center;
             padding: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .countdown-wrapper:hover {
+            transform: translateY(-3px) rotate(-0.5deg);
+            border-color: rgba(0, 245, 212, 0.4);
+        }
+
+        .countdown-wrapper:active {
+            transform: scale(0.98);
         }
 
         .countdown-label {
@@ -207,9 +222,192 @@
             margin-top: 0.5rem;
         }
 
+        .countdown-joke {
+            font-size: 0.8rem;
+            color: #f72585;
+            margin-top: 0.25rem;
+            line-height: 1.2;
+        }
+
         .countdown-message {
             font-size: 1.2rem;
             color: #aaa;
+            min-height: 1.5em;
+            transition: opacity 0.4s ease;
+        }
+
+        .countdown-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.5rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: #00f5d4;
+        }
+
+        .click-hint {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            animation: wiggle 2.5s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 80%, 100% { transform: rotate(0); }
+            85% { transform: rotate(-3deg); }
+            90% { transform: rotate(3deg); }
+            95% { transform: rotate(-2deg); }
+        }
+
+        .hall-of-fame {
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .hall-of-fame h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+            color: #f72585;
+            margin-bottom: 0.25rem;
+        }
+
+        .hall-of-fame p {
+            color: #888;
+            margin-bottom: 1.25rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .gallery figure {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: #111;
+        }
+
+        .gallery img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery figure:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery figcaption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1.5rem 0.5rem 0.6rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            font-weight: 700;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+        }
+
+        .zzz {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+            animation: float-z 2s ease-in-out infinite;
+        }
+
+        @keyframes float-z {
+            0% { opacity: 0; transform: translate(0, 10px) scale(0.8); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translate(10px, -20px) scale(1.2); }
+        }
+
+        .joke-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+        }
+
+        .joke-overlay.open {
+            display: flex;
+        }
+
+        .joke-box {
+            width: 100%;
+            max-width: 420px;
+            padding: 1.5rem;
+            text-align: center;
+            background: #1a1a2e;
+            border: 2px solid #7b2cbf;
+            border-radius: 18px;
+            box-shadow: 0 0 40px rgba(123, 44, 191, 0.5);
+            animation: pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes pop-in {
+            from { transform: scale(0.5) rotate(-8deg); opacity: 0; }
+            to { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .joke-box img {
+            display: block;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #00f5d4;
+        }
+
+        .joke-text {
+            font-size: 1.2rem;
+            line-height: 1.4;
+            margin-bottom: 1.25rem;
+        }
+
+        .joke-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .joke-buttons button {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            color: #0a0a0a;
+            background: #00f5d4;
+        }
+
+        .joke-buttons button.secondary {
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #444;
         }
 
         .party-started {
@@ -249,6 +447,14 @@
             .container {
                 padding: 1rem;
             }
+
+            .countdown-wrapper {
+                padding: 1.25rem 1rem;
+            }
+
+            .gallery {
+                gap: 0.6rem;
+            }
         }
     </style>
 </head>
@@ -258,27 +464,36 @@
             <h1>LAN Party Countdown</h1>
         </header>
 
-        <div class="countdown-wrapper">
-            <div class="countdown-label">Time Remaining</div>
+        <div class="countdown-wrapper" id="countdown-wrapper" role="button" tabindex="0" title="Click me, I dare you">
+            <div class="countdown-label">Time until someone falls asleep at the LAN</div>
             <div class="countdown-grid" id="countdown-grid">
                 <div class="countdown-item">
                     <span class="countdown-value" id="days">--</span>
                     <span class="countdown-unit">Days</span>
+                    <span class="countdown-joke">of pretending to work</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-value" id="hours">--</span>
                     <span class="countdown-unit">Hours</span>
+                    <span class="countdown-joke">of Steam updates</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-value" id="minutes">--</span>
                     <span class="countdown-unit">Minutes</span>
+                    <span class="countdown-joke">looking for a LAN cable</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-value" id="seconds">--</span>
                     <span class="countdown-unit">Seconds</span>
+                    <span class="countdown-joke">of staying awake</span>
                 </div>
             </div>
             <div class="countdown-message" id="countdown-message">until the LAN party begins!</div>
+            <div class="countdown-stats" id="countdown-stats">
+                <span>😴 <b id="naps">--</b> power naps left</span>
+                <span>⚡ <b id="drinks">--</b> energy drinks to buy</span>
+            </div>
+            <div class="click-hint">👆 click for a joke</div>
         </div>
 
         <div class="video-container">
@@ -303,6 +518,34 @@
                 loading="lazy"
             >
             <span class="file-size-badge" id="size-badge"></span>
+        </div>
+
+        <section class="hall-of-fame">
+            <h2>🏆 Hall of Fame: Sleep Champion</h2>
+            <p>LAN 2026, 00:30. The games were running. Our friend was not.</p>
+            <div class="gallery">
+                <figure>
+                    <img src="./img/sleeper-1.jpg" alt="Our friend asleep sitting upright at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 25%;">
+                    <span class="zzz">Zzz</span>
+                    <figcaption>00:30 – "just resting my eyes"</figcaption>
+                </figure>
+                <figure>
+                    <img src="./img/sleeper-2.jpg" alt="Our friend asleep slumped over at the LAN" width="600" height="1067" loading="lazy" style="object-position: center 45%;">
+                    <span class="zzz">Zzz</span>
+                    <figcaption>00:33 – full AFK mode</figcaption>
+                </figure>
+            </div>
+        </section>
+    </div>
+
+    <div class="joke-overlay" id="joke-overlay" role="dialog" aria-modal="true" aria-labelledby="joke-text">
+        <div class="joke-box" id="joke-box">
+            <img id="joke-img" src="./img/sleeper-1.jpg" alt="">
+            <div class="joke-text" id="joke-text"></div>
+            <div class="joke-buttons">
+                <button type="button" id="joke-next">😂 Another one</button>
+                <button type="button" class="secondary" id="joke-close">Close</button>
+            </div>
         </div>
     </div>
 
@@ -334,14 +577,90 @@
             img.src = './img/' + filename;
         }
 
+        const LAN_START = new Date(2027, 10, 10, 18, 0, 0); // 10 Nov 2027, 18:00 local time
+
+        const messages = [
+            'until the LAN party begins!',
+            'until our friend falls asleep at 00:30 (again)',
+            'until "just one more game" (x47)',
+            'until someone forgets their power cable',
+            'until the router gets restarted for no reason',
+            'until pizza #3 arrives'
+        ];
+
+        const jokes = [
+            "Our friend's K/D at the last LAN: 0 kills, 0 deaths, 8 hours AFK.",
+            'Not sleeping — just buffering. Since 00:30.',
+            'LAN stands for "Lying Around Napping". Our friend read the rules very carefully.',
+            'Ping: 5 ms. Snoring: 120 dB. Guess which one we noticed.',
+            'Achievement unlocked: fell asleep before the first game finished downloading.',
+            'Doctors recommend 8 hours of sleep. Our friend does them at the LAN, to save on electricity at home.',
+            "Energy drinks consumed: 4. Minutes awake after midnight: 30. Science can't explain it.",
+            'Pro tip: bring headphones. Not for the game — for the snoring.',
+            'Our friend has the best uptime at every LAN. Just not the "awake" kind.',
+            'Favourite game mode? Sleep & Seek. Mostly sleep.',
+            "This year we're setting an alarm. Then a second one. Then a bucket of cold water."
+        ];
+
+        // face position in each photo, so the round avatar shows the face
+        const jokeImages = [
+            { src: './img/sleeper-1.jpg', position: '75% 30%' },
+            { src: './img/sleeper-2.jpg', position: '35% 45%' }
+        ];
+
+        let lastJoke = -1;
+
+        function showJoke() {
+            let i;
+            do { i = Math.floor(Math.random() * jokes.length); } while (i === lastJoke);
+            lastJoke = i;
+            const pic = jokeImages[i % jokeImages.length];
+            const img = document.getElementById('joke-img');
+            img.src = pic.src;
+            img.style.objectPosition = pic.position;
+            document.getElementById('joke-text').textContent = jokes[i];
+            document.getElementById('joke-overlay').classList.add('open');
+            // restart the pop-in animation on "Another one"
+            const box = document.getElementById('joke-box');
+            box.style.animation = 'none';
+            box.offsetHeight;
+            box.style.animation = '';
+        }
+
+        function closeJoke() {
+            document.getElementById('joke-overlay').classList.remove('open');
+        }
+
+        const wrapper = document.getElementById('countdown-wrapper');
+        wrapper.addEventListener('click', showJoke);
+        wrapper.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showJoke(); }
+        });
+        document.getElementById('joke-next').addEventListener('click', showJoke);
+        document.getElementById('joke-close').addEventListener('click', closeJoke);
+        document.getElementById('joke-overlay').addEventListener('click', e => {
+            if (e.target.id === 'joke-overlay') closeJoke();
+        });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeJoke(); });
+
+        let messageIndex = 0;
+        const messageInterval = setInterval(() => {
+            const el = document.getElementById('countdown-message');
+            messageIndex = (messageIndex + 1) % messages.length;
+            el.style.opacity = 0;
+            setTimeout(() => { el.textContent = messages[messageIndex]; el.style.opacity = 1; }, 400);
+        }, 4000);
+
         function updateCountdown() {
-            const meetingDate = new Date('November 6, 2026 18:00:00').getTime();
+            const meetingDate = LAN_START.getTime();
             const now = new Date().getTime();
             const distance = meetingDate - now;
 
             if (distance < 0) {
                 clearInterval(interval);
+                clearInterval(messageInterval);
                 document.getElementById('countdown-grid').style.display = 'none';
+                document.getElementById('countdown-stats').style.display = 'none';
                 document.getElementById('countdown-message').innerHTML = '<span class="party-started">🎮 LAN Party Has Started! 🎮</span>';
                 document.getElementById('countdown-label')?.remove();
                 loadImage('piter.jpg');
@@ -357,6 +676,9 @@
             document.getElementById('hours').textContent = String(hours).padStart(2, '0');
             document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
             document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            // 20-minute power naps, and one energy drink per 6 hours (it's a marathon)
+            document.getElementById('naps').textContent = Math.floor(distance / (1000 * 60 * 20)).toLocaleString();
+            document.getElementById('drinks').textContent = Math.ceil(distance / (1000 * 60 * 60 * 6)).toLocaleString();
         }
 
         loadImage('kielon-dance.gif');
